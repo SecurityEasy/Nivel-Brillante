@@ -147,7 +147,6 @@ const spinWheel = () => {
           girado = true;
           spinButton.disabled = true;
 
-          fuego.style.visibility = "visible";
 
           fire(-1.25, {
             spread: 25,
