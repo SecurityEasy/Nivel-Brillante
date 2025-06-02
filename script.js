@@ -85,21 +85,16 @@ function drawWheel() {
 let angle = 0;
 let isSpinning = false;
 
-function findAngle() {
-  const fixedPremio = "1 VL103M + 10 SIM Telcel";
-    p.replace(/\n/g, " ").includes(fixedPremio)
-  );
+let angle = 195; // Comienza apuntando a otro premio visualmente
+let isSpinning = false;
 
-  if (fixedIndex === -1) {
-    console.error("❌ Premio no encontrado. Revisa el texto exacto.");
-    return [0, 0];
-  }
-
-  const sliceAngle = 360 / premios.length;
-  const middleOfSlice = sliceAngle * fixedIndex + sliceAngle / 2;
-  const fullRotations = 5 * 360;
-  const rotation = fullRotations + 270 - middleOfSlice;
-
+function findAgle() {
+  const fixedIndex = premios.findIndex((p) => p.includes("1 VL103M + 10 SIM Telcel");
+  const degreesPerPrize = 360 / premios.length;
+  const pointerOffset = -degreesPerPrize; // 🔺 Donde apunta el fueguito (arriba)
+  const targetAngle =
+    360 - (fixedIndex * degreesPerPrize + degreesPerPrize / 2) + pointerOffset;
+  const rotation = 360 * 5 + targetAngle - angle;
   return [rotation, fixedIndex];
 }
 
