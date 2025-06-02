@@ -125,7 +125,7 @@ const spinWheel = () => {
     drawWheel();
     ctx.restore();
 
-    if (progress < 1 && rotation !== findAgle()[0]) {
+    if (progress < 1 && rotation !== findAngle()[0]) {
       requestAnimationFrame(animate);
     } else {
       isSpinning = false;
