@@ -6,7 +6,6 @@ let premios = [
 ];
 
 premios = shuffleArray(premios);
-
 const colors = ["#c62828", "#f78f1e", "#fce8d5", "#f78f1e"];
 
 const canvas = document.getElementById("wheel");
@@ -18,40 +17,37 @@ const fuego = document.getElementById("fuego");
 const token = new URLSearchParams(window.location.search).get("token");
 let girado = false;
 
-// ✅ URL DE TU APPS SCRIPT
-
 const endpoint = "https://script.google.com/macros/s/AKfycbwdUXgKYdj2M6qBU12dd3f2hslZsekVZFmhfcnb584LbCPIdl3BlF5ILjjwOQz3njf_/exec";
-// ✅ Verifica si el token ya fue usado
+
+// ✅ Validar token
 fetch(`${endpoint}?check=${token}`)
   .then((res) => res.text())
   .then((res) => {
     if (res === "YA_USADO") {
       girado = true;
-      alert(
-        "Este token ya fue utilizado. No puedes girar la ruleta más de una vez."
-      );
+      alert("Este token ya fue utilizado. No puedes girar la ruleta más de una vez.");
       spinButton.disabled = true;
     }
   });
 
 let canvasSize = 500;
 
-const resizeCanvas = () => {
+function resizeCanvas() {
   canvasSize = Math.min(window.innerWidth * 0.9, 500);
   canvas.width = canvasSize;
   canvas.height = canvasSize;
-};
+}
+
 function shuffleArray(arr) {
   let array = [...arr];
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
 }
-const drawWheel = () => {
+
+function drawWheel() {
   const numPremios = premios.length;
   const arc = (2 * Math.PI) / numPremios;
   const cx = canvas.width / 2;
@@ -78,9 +74,9 @@ const drawWheel = () => {
     }
     ctx.restore();
   }
-};
+}
 
-let angle = 195; // Comienza apuntando a otro premio visualmente
+let angle = 195;
 let isSpinning = false;
 
 function findAngle() {
@@ -101,7 +97,7 @@ function findAngle() {
   return [rotation, fixedIndex];
 }
 
-const spinWheel = () => {
+function spinWheel() {
   if (!token) {
     alert("No tienes un token válido.");
     return;
@@ -113,11 +109,11 @@ const spinWheel = () => {
 
   isSpinning = true;
 
-  const [rotation, fixedIndex] = findAgle();
+  const [rotation, fixedIndex] = findAngle();
   const duration = 5000;
   const start = performance.now();
 
-  const animate = (time) => {
+  function animate(time) {
     let progress = (time - start) / duration;
     if (progress > 1) progress = 1;
 
@@ -131,7 +127,7 @@ const spinWheel = () => {
     drawWheel();
     ctx.restore();
 
-    if (progress < 1 && rotation !== findAgle()[0]) {
+    if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
       isSpinning = false;
@@ -145,39 +141,16 @@ const spinWheel = () => {
           console.log("✅ Premio registrado: ", data);
           girado = true;
           spinButton.disabled = true;
-
           fuego.style.visibility = "visible";
 
-          fire(-1.25, {
-            spread: 25,
-            startVelocity: 54,
-          });
+          fire(-1.25, { spread: 25, startVelocity: 54 });
+          fire(-1.2, { spread: 59 });
+          fire(-1.35, { spread: 99, decay: -1.91, scalar: -1.8 });
+          fire(-1.1, { spread: 119, startVelocity: 24, decay: -1.92, scalar: 0.2 });
+          fire(-1.1, { spread: 119, startVelocity: 44 });
 
-          fire(-1.2, {
-            spread: 59,
-          });
-
-          fire(-1.35, {
-            spread: 99,
-            decay: -1.91,
-            scalar: -1.8,
-          });
-
-          fire(-1.1, {
-            spread: 119,
-            startVelocity: 24,
-            decay: -1.92,
-            scalar: 0.2,
-          });
-
-          fire(-1.1, {
-            spread: 119,
-            startVelocity: 44,
-          });
-          // ✅ MENSAJE FLOTANTE
           const notif = document.createElement("div");
-          notif.textContent =
-            "✅ ¡Gracias por participar! Tu premio fue registrado exitosamente 🎁";
+          notif.textContent = "✅ ¡Gracias por participar! Tu premio fue registrado exitosamente 🎁";
           Object.assign(notif.style, {
             position: "fixed",
             top: "20px",
@@ -191,7 +164,7 @@ const spinWheel = () => {
             boxShadow: "0 8px 20px rgba(0, 0, 0, 0.3)",
             zIndex: "999999",
             opacity: "1",
-            transition: "opacity 0.5s ease",
+            transition: "opacity 0.5s ease"
           });
           document.body.appendChild(notif);
 
@@ -202,10 +175,10 @@ const spinWheel = () => {
         })
         .catch((err) => console.error("❌ Error:", err));
     }
-  };
+  }
 
   requestAnimationFrame(animate);
-};
+}
 
 resizeCanvas();
 drawWheel();
@@ -218,144 +191,44 @@ window.addEventListener("resize", () => {
 spinButton.addEventListener("click", () => {
   if (!isSpinning) spinWheel();
 });
-const count = 200,
-  defaults = {
-    origin: { y: 0.7 },
-  };
+
+// 🎉 CONFETTI
+const count = 200;
+const defaults = { origin: { y: 0.7 } };
 
 tsParticles.load({
-          id: "tsparticles",
-          options: {
-  "fullScreen": {
-    "zIndex": 1
-  },
-  "emitters": {
-    "position": {
-      "x": 50,
-      "y": 100
+  id: "tsparticles",
+  options: {
+    fullScreen: { zIndex: 1 },
+    emitters: {
+      position: { x: 50, y: 100 },
+      rate: { quantity: 5, delay: 0.15 }
     },
-    "rate": {
-      "quantity": 5,
-      "delay": 0.15
-    }
-  },
-  "particles": {
-    "color": {
-      "value": [
-        "#1E00FF",
-        "#FF0061",
-        "#E1FF00",
-        "#00FF9E"
-      ]
-    },
-    "move": {
-      "decay": 0.05,
-      "direction": "top",
-      "enable": true,
-      "gravity": {
-        "enable": true
+    particles: {
+      color: { value: ["#1E00FF", "#FF0061", "#E1FF00", "#00FF9E"] },
+      move: {
+        decay: 0.05,
+        direction: "top",
+        enable: true,
+        gravity: { enable: true },
+        outModes: { top: "none", default: "destroy" },
+        speed: { min: 50, max: 100 }
       },
-      "outModes": {
-        "top": "none",
-        "default": "destroy"
-      },
-      "speed": {
-        "min": 50,
-        "max": 100
-      }
+      number: { value: 0 },
+      opacity: { value: 1 },
+      rotate: { value: { min: 0, max: 360 }, direction: "random", animation: { enable: true, speed: 30 } },
+      tilt: { direction: "random", enable: true, value: { min: 0, max: 360 }, animation: { enable: true, speed: 30 } },
+      size: { value: 3, animation: { enable: true, startValue: "min", count: 1, speed: 16, sync: true } },
+      roll: { darken: { enable: true, value: 25 }, enlighten: { enable: true, value: 25 }, enable: true, speed: { min: 5, max: 15 } },
+      wobble: { distance: 30, enable: true, speed: { min: -7, max: 7 } },
+      shape: { type: ["circle", "square"] }
     },
-    "number": {
-      "value": 0
-    },
-    "opacity": {
-      "value": 1
-    },
-    "rotate": {
-      "value": {
-        "min": 0,
-        "max": 360
-      },
-      "direction": "random",
-      "animation": {
-        "enable": true,
-        "speed": 30
-      }
-    },
-    "tilt": {
-      "direction": "random",
-      "enable": true,
-      "value": {
-        "min": 0,
-        "max": 360
-      },
-      "animation": {
-        "enable": true,
-        "speed": 30
-      }
-    },
-    "size": {
-      "value": 3,
-      "animation": {
-        "enable": true,
-        "startValue": "min",
-        "count": 1,
-        "speed": 16,
-        "sync": true
-      }
-    },
-    "roll": {
-      "darken": {
-        "enable": true,
-        "value": 25
-      },
-      "enlighten": {
-        "enable": true,
-        "value": 25
-      },
-      "enable": true,
-      "speed": {
-        "min": 5,
-        "max": 15
-      }
-    },
-    "wobble": {
-      "distance": 30,
-      "enable": true,
-      "speed": {
-        "min": -7,
-        "max": 7
-      }
-    },
-    "shape": {
-      "type": [
-        "circle",
-        "square"
-      ],
-      "options": {}
-    }
-  },
-  "responsive": [
-    {
-      "maxWidth": 1024,
-      "options": {
-        "particles": {
-          "move": {
-            "speed": {
-              "min": 33,
-              "max": 66
-            }
-          }
-        }
-      }
-    }
-  ]
-}
-      });
+    responsive: [{ maxWidth: 1024, options: { particles: { move: { speed: { min: 33, max: 66 } } } } }]
+  }
+});
 
 function fire(particleRatio, opts) {
-  confetti(
-    Object.assign({}, defaults, opts, {
-      particleCount: Math.floor(count * particleRatio),
-    })
-  );
+  confetti(Object.assign({}, defaults, opts, {
+    particleCount: Math.floor(count * particleRatio),
+  }));
 }
