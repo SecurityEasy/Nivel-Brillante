@@ -79,6 +79,7 @@ function drawWheel() {
 let angle = 195;
 let isSpinning = false;
 
+const fixedPremio = "1 VL103M + 10 SIM Telcel";  // 🎯 premio exacto
 function findAngle() {
   const fixedIndex = premios.findIndex(p =>
     p.replace(/\n/g, " ").trim() === fixedPremio.replace(/\n/g, " ").trim()
