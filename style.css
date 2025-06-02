@@ -51,17 +51,19 @@ canvas#wheel {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 10;
   border-radius: 50%;
-  background-color: white;
-  object-fit: contain;
+  z-index: 10;
 }
 
-#fuego {
-  width: 50px;
-  margin: -25px auto 0 auto;
-  display: block;
-  animation: bounce 1s infinite;
+.fuego {
+  position: absolute;
+  left: 50%;
+  bottom: 0px;
+  transform: translateX(-50%);
+  width: 320px;
+  z-index: 999;
+  pointer-events: none;
+  visibility: hidden; /* <-- CAMBIA display: none por ESTO */
 }
 
 #spin {
