@@ -10,13 +10,31 @@
       font-family: Arial, sans-serif;
       background-color: #fff5f5;
     }
+
     canvas {
       margin-top: 20px;
       border-radius: 50%;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     }
+
+    #fuego {
+      font-size: 50px;
+      margin-top: -30px;
+      visibility: hidden;
+      animation: bounce 1s infinite;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: fit-content;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
     #spin {
-      margin-top: 30px;
+      margin-top: 10px;
       padding: 15px 30px;
       font-size: 18px;
       background-color: #c62828;
@@ -25,28 +43,22 @@
       border-radius: 12px;
       cursor: pointer;
     }
+
     #resultado {
       margin-top: 20px;
       font-size: 20px;
       font-weight: bold;
-    }
-    #fuego {
-      width: 100px;
-      margin: 20px auto;
-      visibility: hidden;
     }
   </style>
 </head>
 <body>
   <h1>¡Gira la ruleta y gana grandes premios!</h1>
   <canvas id="wheel"></canvas>
-  <br />
+  <div id="fuego">🔥</div>
   <button id="spin">GIRAR</button>
   <div id="resultado"></div>
-  <div id="fuego">🔥</div>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
 
   <script>
     let premios = [
@@ -126,7 +138,7 @@
       }
     };
 
-    let angle = 195;
+    let angle = 0;
     let isSpinning = false;
 
     function findAngle() {
@@ -141,8 +153,9 @@
 
       const sliceAngle = 360 / premios.length;
       const middleOfSlice = sliceAngle * fixedIndex + sliceAngle / 2;
+
       const fullRotations = 5 * 360;
-      const rotation = fullRotations + (360 - middleOfSlice);
+      const rotation = fullRotations + 270 - middleOfSlice; // 🧭 ¡ABAJO!
 
       return [rotation, fixedIndex];
     }
@@ -188,7 +201,7 @@
             .then((data) => {
               girado = true;
               spinButton.disabled = true;
-              fuego.style.visibility = "visible";
+              fuego.style.visibility = "visible"; // 🔥 Mostrar el fueguito
 
               fire(0.3, { spread: 60 });
               fire(0.2, { spread: 100 });
@@ -244,44 +257,6 @@
         particleCount: Math.floor(count * particleRatio),
       }));
     }
-
-    tsParticles.load({
-      id: "tsparticles",
-      options: {
-        fullScreen: { zIndex: 1 },
-        emitters: {
-          position: { x: 50, y: 100 },
-          rate: { quantity: 5, delay: 0.15 }
-        },
-        particles: {
-          color: { value: ["#1E00FF", "#FF0061", "#E1FF00", "#00FF9E"] },
-          move: {
-            decay: 0.05,
-            direction: "top",
-            enable: true,
-            gravity: { enable: true },
-            outModes: { top: "none", default: "destroy" },
-            speed: { min: 50, max: 100 }
-          },
-          number: { value: 0 },
-          opacity: { value: 1 },
-          rotate: { value: { min: 0, max: 360 }, direction: "random", animation: { enable: true, speed: 30 } },
-          tilt: { direction: "random", enable: true, value: { min: 0, max: 360 }, animation: { enable: true, speed: 30 } },
-          size: { value: 3, animation: { enable: true, startValue: "min", count: 1, speed: 16, sync: true } },
-          roll: { darken: { enable: true, value: 25 }, enlighten: { enable: true, value: 25 }, enable: true, speed: { min: 5, max: 15 } },
-          wobble: { distance: 30, enable: true, speed: { min: -7, max: 7 } },
-          shape: { type: ["circle", "square"] }
-        },
-        responsive: [
-          {
-            maxWidth: 1024,
-            options: {
-              particles: { move: { speed: { min: 33, max: 66 } } }
-            }
-          }
-        ]
-      }
-    });
   </script>
 </body>
 </html>
