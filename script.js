@@ -1,14 +1,14 @@
-let premiosOriginales = [
+// 🎯 Premio fijo que queremos que gane visualmente
+const fixedPremio = "1 VL103M\n+ 10 SIM Telcel";
+
+let premios = [
   "1 GT06N\n+1 VL103M\n+ 10 SIM Telcel",
-  "1 GT06N\n+ 1 ET200N\n 2 renovaciones\nanuales\n+ 5 SIM Telcel",
+  "1 GT06N\n+ 1 ET200N\n2 renovaciones\nanuales\n+ 5 SIM Telcel",
   "Envío Gratis\nó 2 renovaciones\nde 10 años\n+ 5 SIM Telcel",
-  "1 VL103M\n+ 10 SIM Telcel", // 🎯 Este es el truqueado
+  "1 VL103M\n+ 10 SIM Telcel",
 ];
 
-let premios = shuffleArray(premiosOriginales); // Barajamos los premios
-let fixedPremio = "1 VL103M + 10 SIM Telcel"; // Para buscar sin saltos de línea
-let fixedIndex = premios.findIndex(p => p.replace(/\n/g, " ").trim() === fixedPremio); // Localiza el truqueado en el nuevo orden
-
+premios = shuffleArray(premios);
 const colors = ["#c62828", "#f78f1e", "#fce8d5", "#f78f1e"];
 
 const canvas = document.getElementById("wheel");
@@ -19,13 +19,11 @@ const fuego = document.getElementById("fuego");
 
 const token = new URLSearchParams(window.location.search).get("token");
 let girado = false;
+const endpoint = "https://script.google.com/macros/s/AKfycbwdUXgKYdj2M6qBU12dd3f2hslZsekVZFmhfcnb584LbCPIdl3BlF5ILjjwOQz3njf_/exec";
 
-const endpoint = "https://script.google.com/macros/s/TU_URL_DE_APPS_SCRIPT/exec";
-
-// ✅ Validar token
 fetch(`${endpoint}?check=${token}`)
-  .then((res) => res.text())
-  .then((res) => {
+  .then(res => res.text())
+  .then(res => {
     if (res === "YA_USADO") {
       girado = true;
       alert("Este token ya fue utilizado. No puedes girar la ruleta más de una vez.");
@@ -83,26 +81,27 @@ let angle = 195;
 let isSpinning = false;
 
 function findAngle() {
+  const fixedIndex = premios.findIndex(p =>
+    p.replace(/\n/g, " ").trim() === fixedPremio.replace(/\n/g, " ").trim()
+  );
+
+  if (fixedIndex === -1) {
+    console.error("❌ Premio no encontrado");
+    return [0, 0];
+  }
+
   const sliceAngle = 360 / premios.length;
   const middleOfSlice = sliceAngle * fixedIndex + sliceAngle / 2;
-  const fullRotations = 5 * 360;
-  const rotation = fullRotations + 90 - middleOfSlice; // 🔥 Apunta hacia abajo
+  const rotation = 5 * 360 + 270 - middleOfSlice; // El fuego apunta a 270 grados
   return [rotation, fixedIndex];
 }
 
 function spinWheel() {
-  if (!token) {
-    alert("No tienes un token válido.");
-    return;
-  }
-  if (girado) {
-    alert("Ya has girado la ruleta.");
-    return;
-  }
+  if (!token) return alert("No tienes un token válido.");
+  if (girado) return alert("Ya has girado la ruleta.");
 
   isSpinning = true;
-
-  const [rotation, indexGanador] = findAngle();
+  const [rotation, fixedIndex] = findAngle();
   const duration = 5000;
   const start = performance.now();
 
@@ -124,14 +123,12 @@ function spinWheel() {
       requestAnimationFrame(animate);
     } else {
       isSpinning = false;
-
-      const premio = premios[indexGanador];
+      const premio = premios[fixedIndex];
       resultado.textContent = "¡Felicidades! Ganaste: " + premio;
 
       fetch(`${endpoint}?token=${token}&premio=${encodeURIComponent(premio)}`)
-        .then((res) => res.text())
-        .then((data) => {
-          console.log("✅ Premio registrado: ", data);
+        .then(res => res.text())
+        .then(data => {
           girado = true;
           spinButton.disabled = true;
           fuego.style.visibility = "visible";
@@ -144,7 +141,6 @@ function spinWheel() {
 
 resizeCanvas();
 drawWheel();
-
 window.addEventListener("resize", () => {
   resizeCanvas();
   drawWheel();
