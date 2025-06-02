@@ -121,12 +121,7 @@ function spinWheel() {
     angle = rotation * progress;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate((angle * Math.PI) / 180);
-    ctx.translate(-canvas.width / 2, -canvas.height / 2);
-    drawWheel(); // ya no pasamos offset porque ya rotamos
-    ctx.restore();
+    drawWheel(angle); // 🎯 ahora sí, todo se dibuja girado correctamente
 
     if (progress < 1) {
       requestAnimationFrame(animate);
