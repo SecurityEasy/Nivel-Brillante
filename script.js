@@ -22,13 +22,17 @@ let girado = false;
 
 const endpoint = "https://script.google.com/macros/s/AKfycbx-6Yazj817sclXp5RjOwArnXeKjWDNBE5Hpaqu4bWPJhNriI5khrltiCeP6_HrawRw7g/exec";
 
+// 🔒 Verifica si el token ya fue usado
 fetch(`${endpoint}?check=${token}`)
   .then((res) => res.text())
   .then((res) => {
     if (res === "YA_USADO") {
       girado = true;
-      alert("Este token ya fue utilizado. No puedes girar la ruleta más de una vez.");
       spinButton.disabled = true;
+      spinButton.textContent = "YA GIRASTE 🎉";
+      spinButton.style.backgroundColor = "#555";
+      spinButton.style.cursor = "not-allowed";
+      alert("Este token ya fue utilizado. No puedes girar la ruleta más de una vez.");
     }
   });
 
@@ -78,7 +82,7 @@ function drawWheel() {
   }
 }
 
-let angle = 195;
+let angle = 0;
 let isSpinning = false;
 
 function findAngle() {
@@ -134,7 +138,9 @@ function spinWheel() {
           girado = true;
           spinButton.disabled = true;
           fuego.style.visibility = "visible";
-          confetti();
+          spinButton.textContent = "YA GIRASTE 🎉";
+          spinButton.style.backgroundColor = "#555";
+          spinButton.style.cursor = "not-allowed";
         });
     }
   }
