@@ -1,12 +1,13 @@
-// 🎯 Premio fijo (sin \n porque lo comparamos sin saltos)
-const fixedPremio = "1 VL103M + 10 SIM Telcel";
-
-let premios = [
+let premiosOriginales = [
   "1 GT06N\n+1 VL103M\n+ 10 SIM Telcel",
   "1 GT06N\n+ 1 ET200N\n 2 renovaciones\nanuales\n+ 5 SIM Telcel",
   "Envío Gratis\nó 2 renovaciones\nde 10 años\n+ 5 SIM Telcel",
-  "1 VL103M\n+ 10 SIM Telcel"
+  "1 VL103M\n+ 10 SIM Telcel", // 🎯 Este es el truqueado
 ];
+
+let premios = shuffleArray(premiosOriginales); // Barajamos los premios
+let fixedPremio = "1 VL103M + 10 SIM Telcel"; // Para buscar sin saltos de línea
+let fixedIndex = premios.findIndex(p => p.replace(/\n/g, " ").trim() === fixedPremio); // Localiza el truqueado en el nuevo orden
 
 const colors = ["#c62828", "#f78f1e", "#fce8d5", "#f78f1e"];
 
@@ -18,8 +19,10 @@ const fuego = document.getElementById("fuego");
 
 const token = new URLSearchParams(window.location.search).get("token");
 let girado = false;
-const endpoint = "https://script.google.com/macros/s/AKfycbwdUXgKYdj2M6qBU12dd3f2hslZsekVZFmhfcnb584LbCPIdl3BlF5ILjjwOQz3njf_/exec";
 
+const endpoint = "https://script.google.com/macros/s/TU_URL_DE_APPS_SCRIPT/exec";
+
+// ✅ Validar token
 fetch(`${endpoint}?check=${token}`)
   .then((res) => res.text())
   .then((res) => {
@@ -36,6 +39,15 @@ function resizeCanvas() {
   canvasSize = Math.min(window.innerWidth * 0.9, 500);
   canvas.width = canvasSize;
   canvas.height = canvasSize;
+}
+
+function shuffleArray(arr) {
+  let array = [...arr];
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 function drawWheel() {
@@ -67,44 +79,37 @@ function drawWheel() {
   }
 }
 
-function shuffleArray(arr) {
-  let array = [...arr];
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
 let angle = 195;
 let isSpinning = false;
 
 function findAngle() {
-  const fixedIndex = premios.findIndex(p =>
-    p.replace(/\n/g, " ").trim() === fixedPremio.replace(/\n/g, " ").trim()
-  );
-  if (fixedIndex === -1) {
-    console.error("❌ Premio no encontrado.");
-    return [0, 0];
-  }
   const sliceAngle = 360 / premios.length;
   const middleOfSlice = sliceAngle * fixedIndex + sliceAngle / 2;
-  const rotation = 5 * 360 + 270 - middleOfSlice; // El puntero está abajo
+  const fullRotations = 5 * 360;
+  const rotation = fullRotations + 90 - middleOfSlice; // 🔥 Apunta hacia abajo
   return [rotation, fixedIndex];
 }
 
 function spinWheel() {
-  if (!token) return alert("No tienes un token válido.");
-  if (girado) return alert("Ya has girado la ruleta.");
+  if (!token) {
+    alert("No tienes un token válido.");
+    return;
+  }
+  if (girado) {
+    alert("Ya has girado la ruleta.");
+    return;
+  }
 
   isSpinning = true;
-  const [rotation, fixedIndex] = findAngle();
+
+  const [rotation, indexGanador] = findAngle();
   const duration = 5000;
   const start = performance.now();
 
   function animate(time) {
     let progress = (time - start) / duration;
     if (progress > 1) progress = 1;
+
     angle = rotation * progress;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -119,11 +124,14 @@ function spinWheel() {
       requestAnimationFrame(animate);
     } else {
       isSpinning = false;
-      const premio = premios[fixedIndex];
+
+      const premio = premios[indexGanador];
       resultado.textContent = "¡Felicidades! Ganaste: " + premio;
+
       fetch(`${endpoint}?token=${token}&premio=${encodeURIComponent(premio)}`)
         .then((res) => res.text())
-        .then(() => {
+        .then((data) => {
+          console.log("✅ Premio registrado: ", data);
           girado = true;
           spinButton.disabled = true;
           fuego.style.visibility = "visible";
