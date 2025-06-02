@@ -20,7 +20,7 @@ let girado = false;
 
 // ✅ URL DE TU APPS SCRIPT
 
-const endpoint = "https://script.google.com/macros/s/AKfycbwdUXgKYdj2M6qBU12dd3f2hslZsekVZFmhfcnb584LbCPIdl3BlF5ILjjwOQz3njf_/exec";
+const endpoint = "https://script.google.com/macros/s/AKfycbx-6Yazj817sclXp5RjOwArnXeKjWDNBE5Hpaqu4bWPJhNriI5khrltiCeP6_HrawRw7g/exec";
 // ✅ Verifica si el token ya fue usado
 fetch(`${endpoint}?check=${token}`)
   .then((res) => res.text())
