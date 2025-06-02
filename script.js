@@ -85,13 +85,22 @@ let isSpinning = false;
 
 function findAngle() {
   const fixedIndex = premios.findIndex((p) =>
-    p.includes("1 VL103M + 10 SIM Telcel")
+    p.replace(/\n/g, " ").includes("1 VL103M + 10 SIM Telcel")
   );
-  const degreesPerPrize = 360 / premios.length;
-  const pointerOffset = -degreesPerPrize;
-  const targetAngle =
-    360 - (fixedIndex * degreesPerPrize + degreesPerPrize / 2) + pointerOffset;
-  const rotation = 360 * 5 + targetAngle - angle;
+
+  if (fixedIndex === -1) {
+    console.error("❌ Premio no encontrado. Revisa el texto exacto.");
+    return [0, 0]; // fallback
+  }
+
+  const sliceAngle = 360 / premios.length;
+  const minAngle = sliceAngle * fixedIndex;
+  const maxAngle = minAngle + sliceAngle;
+  const randomAngle = Math.floor(Math.random() * (maxAngle - minAngle)) + minAngle;
+
+  const fullRotations = 5 * 360; // Gira 5 vueltas antes de caer
+  const rotation = fullRotations + (360 - randomAngle);
+
   return [rotation, fixedIndex];
 }
 
