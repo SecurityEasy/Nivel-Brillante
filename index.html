@@ -68,12 +68,12 @@
   </style>
 </head>
 <body>
-  <img src="HOTSALE.png" alt="HOT SALE" class="banner" />
+  <img src="assets/HOTSALE.png" alt="HOT SALE" class="banner" />
   <h1>¡Gira la Security Ruleta y gana grandes premios!</h1>
   <p>Recuerda que sólo podrás girar la ruleta una vez, tu premio nos llegará en automático, ¡mucha suerte!</p>
 
   <canvas id="wheel"></canvas>
-  <img src="fuego.png" id="fuego" />
+  <img src="assets/fuego.png" id="fuego" />
   <br>
   <button id="spin">GIRAR</button>
   <div id="resultado"></div>
@@ -175,7 +175,7 @@
       const middleOfSlice = sliceAngle * fixedIndex + sliceAngle / 2;
 
       const fullRotations = 5 * 360;
-      const rotation = fullRotations + 270 - middleOfSlice; // 👉 Caída exacta abajo
+      const rotation = fullRotations + 270 - middleOfSlice; // 👈 El premio cae ABAJO donde está el fuego
 
       return [rotation, fixedIndex];
     }
