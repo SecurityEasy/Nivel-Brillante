@@ -63,14 +63,16 @@
       z-index: 10;
     }
 
-    .fuego {
-      position: absolute;
-      left: 50%;
-      bottom: -177px;
-      transform: translateX(-50%);
+    #fuego {
       width: 200px;
-      z-index: 999;
-      pointer-events: none;
+      margin: -25px auto 0 auto;
+      display: block;
+      animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
 
