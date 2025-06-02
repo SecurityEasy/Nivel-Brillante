@@ -1,6 +1,3 @@
-// 🎯 Premio fijo al que siempre debe caer (debe coincidir EXACTO, incluyendo saltos de línea)
-const fixedPremio = "1 VL103M\n+ 10 SIM Telcel";
-
 let premios = [
   "1 GT06N\n+1 VL103M\n+ 10 SIM Telcel",
   "1 GT06N\n+ 1 ET200N\n 2 renovaciones\nanuales\n+ 5 SIM Telcel",
@@ -11,7 +8,6 @@ let premios = [
 premios = shuffleArray(premios);
 
 const colors = ["#c62828", "#f78f1e", "#fce8d5", "#f78f1e"];
-
 
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
@@ -88,7 +84,7 @@ let angle = 195; // Comienza apuntando a otro premio visualmente
 let isSpinning = false;
 
 function findAgle() {
-  const fixedIndex = premios.findIndex((p) => p.includes("1 VL103M\n+ 10 SIM Telcel");
+  const fixedIndex = premios.findIndex((p) => p.includes("1 VL103M + 10 SIM Telcel"));
   const degreesPerPrize = 360 / premios.length;
   const pointerOffset = -degreesPerPrize; // 🔺 Donde apunta el fueguito (arriba)
   const targetAngle =
