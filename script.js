@@ -27,10 +27,10 @@ fetch(`${endpoint}?check=${token}`)
   .then((res) => {
     if (res === "YA_USADO") {
       girado = true;
-      alert(
-        "Este token ya fue utilizado. No puedes girar la ruleta más de una vez."
-      );
       spinButton.disabled = true;
+      spinButton.textContent = "YA GIRASTE 🎉";
+      spinButton.style.backgroundColor = "#555";
+      spinButton.style.cursor = "not-allowed";
     }
   });
 
