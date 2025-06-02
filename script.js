@@ -1,7 +1,7 @@
 let premios = [
 "1 GT06N\n+1 VL103M\n+ 10 SIM Telcel",
-"1 GT06N\n+ 1 ET200N\n 2 renovaciones anuales\n+ 5 SIM Telcel",
-"Envío Gratis\nó 2 renovaciones de 10 años\n+ 5 SIM Telcel",
+"1 GT06N\n+ 1 ET200N\n 2 renovaciones\nanuales\n+ 5 SIM Telcel",
+"Envío Gratis\nó 2 renovaciones\nde 10 años\n+ 5 SIM Telcel",
 "1 VL103M\n+ 10 SIM Telcel",
 
 ];
