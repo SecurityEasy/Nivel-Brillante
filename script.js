@@ -1,4 +1,4 @@
-// 🎯 Premio fijo al que siempre debe caer
+// 🎯 Premio fijo al que siempre debe caer (debe coincidir EXACTO, incluyendo saltos de línea)
 const fixedPremio = "1 VL103M\n+ 10 SIM Telcel";
 
 let premios = [
@@ -9,6 +9,7 @@ let premios = [
 ];
 
 premios = shuffleArray(premios);
+
 const colors = ["#c62828", "#f78f1e", "#fce8d5", "#f78f1e"];
 
 const canvas = document.getElementById("wheel");
@@ -24,8 +25,8 @@ const endpoint = "https://script.google.com/macros/s/AKfycbx-6Yazj817sclXp5RjOwA
 
 // 🔒 Verifica si el token ya fue usado
 fetch(`${endpoint}?check=${token}`)
-  .then((res) => res.text())
-  .then((res) => {
+  .then(res => res.text())
+  .then(res => {
     if (res === "YA_USADO") {
       girado = true;
       spinButton.disabled = true;
@@ -37,6 +38,8 @@ fetch(`${endpoint}?check=${token}`)
   });
 
 let canvasSize = 500;
+let angle = 195;
+let isSpinning = false;
 
 function resizeCanvas() {
   canvasSize = Math.min(window.innerWidth * 0.9, 500);
@@ -82,19 +85,19 @@ function drawWheel() {
   }
 }
 
-let angle = 0;
-let isSpinning = false;
+function findAngle() {
+  const fixedIndex = premios.findIndex(p => p === fixedPremio);
 
-let angle = 195; // Comienza apuntando a otro premio visualmente
-let isSpinning = false;
+  if (fixedIndex === -1) {
+    console.error("❌ Premio no encontrado. Revisa el texto exacto.");
+    return [0, 0];
+  }
 
-function findAgle() {
-  const fixedIndex = premios.findIndex((p) => p.includes("1 VL103M + 10 SIM Telcel");
   const degreesPerPrize = 360 / premios.length;
-  const pointerOffset = -degreesPerPrize; // 🔺 Donde apunta el fueguito (arriba)
-  const targetAngle =
-    360 - (fixedIndex * degreesPerPrize + degreesPerPrize / 2) + pointerOffset;
+  const pointerOffset = 0; // 🔥 Fuego apunta hacia abajo (270°), así que offset es 0
+  const targetAngle = 360 - (fixedIndex * degreesPerPrize + degreesPerPrize / 2) + pointerOffset;
   const rotation = 360 * 5 + targetAngle - angle;
+
   return [rotation, fixedIndex];
 }
 
@@ -128,14 +131,18 @@ function spinWheel() {
       resultado.textContent = "¡Felicidades! Ganaste: " + premio;
 
       fetch(`${endpoint}?token=${token}&premio=${encodeURIComponent(premio)}`)
-        .then((res) => res.text())
-        .then((data) => {
+        .then(res => res.text())
+        .then(data => {
+          console.log("✅ Premio registrado:", data);
           girado = true;
           spinButton.disabled = true;
-          fuego.style.visibility = "visible";
           spinButton.textContent = "YA GIRASTE 🎉";
           spinButton.style.backgroundColor = "#555";
           spinButton.style.cursor = "not-allowed";
+          fuego.style.visibility = "visible";
+        })
+        .catch(err => {
+          console.error("❌ Error al registrar premio:", err);
         });
     }
   }
@@ -145,6 +152,7 @@ function spinWheel() {
 
 resizeCanvas();
 drawWheel();
+
 window.addEventListener("resize", () => {
   resizeCanvas();
   drawWheel();
