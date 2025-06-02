@@ -38,9 +38,10 @@
 
     #fuego {
       width: 50px;
-      margin-top: -25px;
       visibility: hidden;
       animation: bounce 1s infinite;
+      margin: -25px auto 0 auto;
+      display: block;
     }
 
     @keyframes bounce {
@@ -89,7 +90,8 @@
     ];
 
     const fixedPremio = "1 VL103M + 10 SIM Telcel";
-    premios = shuffleArray(premios);
+    const originalPremios = [...premios]; // 🧠 Guardamos la lista original
+    premios = shuffleArray(premios); // 💥 Mezclamos para que se vea random
 
     const colors = ["#c62828", "#f78f1e", "#fce8d5", "#f78f1e"];
     const canvas = document.getElementById("wheel");
@@ -162,20 +164,19 @@
     let isSpinning = false;
 
     function findAngle() {
-      const fixedIndex = premios.findIndex((p) =>
-        p.replace(/\n/g, " ").includes(fixedPremio)
+      const fixedText = originalPremios.find(x =>
+        x.replace(/\n/g, " ").includes(fixedPremio)
       );
 
-      if (fixedIndex === -1) {
-        console.error("❌ Premio no encontrado. Revisa el texto exacto.");
-        return [0, 0];
-      }
+      const fixedIndex = premios.findIndex(p =>
+        p.replace(/\n/g, " ").includes(fixedText)
+      );
 
       const sliceAngle = 360 / premios.length;
       const middleOfSlice = sliceAngle * fixedIndex + sliceAngle / 2;
 
       const fullRotations = 5 * 360;
-      const rotation = fullRotations + 270 - middleOfSlice; // 👈 El premio cae ABAJO donde está el fuego
+      const rotation = fullRotations + 270 - middleOfSlice; // 🎯 Apunta hacia abajo (donde está el fuego)
 
       return [rotation, fixedIndex];
     }
