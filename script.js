@@ -97,7 +97,7 @@ function findAngle() {
   const middleOfSlice = sliceAngle * fixedIndex + sliceAngle / 2;
 
   const fullRotations = 5 * 360;
-  const rotation = fullRotations + (360 - middleOfSlice + 90); // <-- 👈 EL CAMBIO ESTÁ AQUÍ
+  const rotation = fullRotations + 270 - middleOfSlice; // 👈 ¡270 grados = parte de abajo!
 
   return [rotation, fixedIndex];
 }
