@@ -86,7 +86,7 @@ let angle = 0;
 let isSpinning = false;
 
 function findAngle() {
-  const fixedIndex = premios.findIndex((p) =>
+  const fixedPremio = "1 VL103M + 10 SIM Telcel";
     p.replace(/\n/g, " ").includes(fixedPremio)
   );
 
