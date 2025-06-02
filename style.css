@@ -55,15 +55,11 @@ canvas#wheel {
   z-index: 10;
 }
 
-.fuego {
-  position: absolute;
-  left: 50%;
-  bottom: 0px;
-  transform: translateX(-50%);
-  width: 320px;
-  z-index: 999;
-  pointer-events: none;
-  visibility: hidden; /* <-- CAMBIA display: none por ESTO */
+#fuego {
+  width: 50px;
+  margin: -25px auto 0 auto;
+  display: block;
+  animation: bounce 1s infinite;
 }
 
 #spin {
