@@ -70,9 +70,9 @@
     .fuego {
       position: absolute;
       left: 50%;
-      bottom: -177px;
+      bottom: -35px;
       transform: translateX(-50%);
-      width: 200px;
+      width: 50px;
       z-index: 999;
       pointer-events: none;
     }
@@ -111,13 +111,14 @@
 
   <div class="ruleta-contenedor">
     <div class="wheel-wrapper">
-    <canvas id="wheel" width="500" height="500"></canvas>
-    <img src="assets/logo.jpg" alt="Logo Security Easy" class="logo" />
-    <img src="assets/fuego.png" alt="Pointer" class="fuego" id="fuego" />
- </div>
+      <canvas id="wheel" width="500" height="500"></canvas>
+      <img src="assets/logo.jpg" alt="Logo Security Easy" class="logo" />
+      <img src="assets/fuego.png" alt="Pointer" class="fuego" id="fuego" />
+    </div>
     <button id="spin">GIRAR</button>
     <p id="resultado"></p>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
