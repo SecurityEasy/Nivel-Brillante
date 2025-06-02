@@ -3,29 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ruleta Nivel Brillante</title>
+  <title>Ruleta Hot Sale Nivel Brillante</title>
   <style>
     body {
-      text-align: center;
+      background-color: #111;
+      color: white;
       font-family: Arial, sans-serif;
-      background-color: #fff5f5;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    img.banner {
+      width: 300px;
+      margin-top: 30px;
+    }
+
+    h1 {
+      color: #ff3c3c;
+      margin: 10px 0 5px;
+    }
+
+    p {
+      font-size: 15px;
+      color: #ddd;
+      margin: 0 0 20px;
     }
 
     canvas {
-      margin-top: 20px;
+      margin-top: 10px;
       border-radius: 50%;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
     }
 
     #fuego {
-      font-size: 50px;
-      margin-top: -30px;
+      width: 50px;
+      margin-top: -25px;
       visibility: hidden;
       animation: bounce 1s infinite;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      width: fit-content;
     }
 
     @keyframes bounce {
@@ -34,27 +49,32 @@
     }
 
     #spin {
-      margin-top: 10px;
-      padding: 15px 30px;
+      margin-top: 15px;
+      padding: 12px 25px;
       font-size: 18px;
       background-color: #c62828;
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
     }
 
     #resultado {
       margin-top: 20px;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
+      color: #fff;
     }
   </style>
 </head>
 <body>
-  <h1>¡Gira la ruleta y gana grandes premios!</h1>
+  <img src="HOTSALE.png" alt="HOT SALE" class="banner" />
+  <h1>¡Gira la Security Ruleta y gana grandes premios!</h1>
+  <p>Recuerda que sólo podrás girar la ruleta una vez, tu premio nos llegará en automático, ¡mucha suerte!</p>
+
   <canvas id="wheel"></canvas>
-  <div id="fuego">🔥</div>
+  <img src="fuego.png" id="fuego" />
+  <br>
   <button id="spin">GIRAR</button>
   <div id="resultado"></div>
 
@@ -155,7 +175,7 @@
       const middleOfSlice = sliceAngle * fixedIndex + sliceAngle / 2;
 
       const fullRotations = 5 * 360;
-      const rotation = fullRotations + 270 - middleOfSlice; // 🧭 ¡ABAJO!
+      const rotation = fullRotations + 270 - middleOfSlice; // 👉 Caída exacta abajo
 
       return [rotation, fixedIndex];
     }
@@ -201,7 +221,7 @@
             .then((data) => {
               girado = true;
               spinButton.disabled = true;
-              fuego.style.visibility = "visible"; // 🔥 Mostrar el fueguito
+              fuego.style.visibility = "visible";
 
               fire(0.3, { spread: 60 });
               fire(0.2, { spread: 100 });
