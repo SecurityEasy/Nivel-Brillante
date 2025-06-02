@@ -105,7 +105,7 @@ const spinWheel = () => {
 
   isSpinning = true;
 
-  const [rotation, fixedIndex] = findAgle();
+  const [rotation, fixedIndex] = findAngle();
   const duration = 5000;
   const start = performance.now();
 
