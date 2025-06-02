@@ -101,7 +101,7 @@ function findAngle() {
 
   const sliceAngle = 360 / premios.length;
   const middleOfSlice = sliceAngle * fixedIndex + sliceAngle / 2;
-  const rotation = 5 * 360 + 270 - middleOfSlice; // fuego = 270°
+  const rotation = 5 * 360 + 90 - middleOfSlice; // fuego = 90° visualmente abajo
   return [rotation, fixedIndex];
 }
 
