@@ -1,5 +1,5 @@
 // 🎯 Premio fijo al que siempre debe caer
-const fixedPremio = "1 VL103M + 10 SIM Telcel";
+const fixedPremio = "1 VL103M\n+ 10 SIM Telcel";
 
 let premios = [
   "1 GT06N\n+1 VL103M\n+ 10 SIM Telcel",
