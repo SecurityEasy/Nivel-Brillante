@@ -31,6 +31,7 @@ fetch(`${endpoint}?check=${token}`)
       alert("Este token ya fue utilizado. No puedes girar la ruleta más de una vez.");
     } else if (res === "NO_USADO") {
       console.log("✅ Token válido, puede girar.");
+      puedeGirar = true;
     } else if (res === "Token no encontrado.") {
       girado = true;
       spinButton.disabled = true;
