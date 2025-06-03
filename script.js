@@ -80,7 +80,7 @@ const drawWheel = () => {
 let angle = 195; // Comienza apuntando a otro premio visualmente
 let isSpinning = false;
 
-function findAgle() {
+function findAngle() {
   const fixedIndex = premios.findIndex((p) =>
   p.replace(/\n/g, " ").includes("1 VL103M + 10 SIM Telcel")
 );
@@ -104,7 +104,7 @@ const spinWheel = () => {
 
   isSpinning = true;
 
-  const [rotation, fixedIndex] = findAgle();
+  const [rotation, fixedIndex] = findAngle();
   const duration = 5000;
   const start = performance.now();
 
@@ -122,7 +122,7 @@ const spinWheel = () => {
     drawWheel();
     ctx.restore();
 
-    if (progress < 1 && rotation !== findAgle()[0]) {
+    if (progress < 1 && rotation !== findAngle()[0]) {
       requestAnimationFrame(animate);
     } else {
       isSpinning = false;
