@@ -130,7 +130,8 @@ function spinWheel() {
       resultado.textContent = "🎉 ¡Felicidades! Ganaste: " + premio;
       fuego.style.visibility = "visible";
 
-      fetch(`${endpoint}?token=${token}&premio=${encodeURIComponent(premio)}`)
+      const premioLimpio = premio.replace(/\n/g, " ").replace(/\s+/g, " ").trim();
+      fetch(`${endpoint}?token=${token}&premio=${encodeURIComponent(premioLimpio)}`)
         .then(res => res.text())
         .then(data => {
           girado = true;
