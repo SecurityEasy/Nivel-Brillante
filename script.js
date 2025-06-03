@@ -16,35 +16,17 @@ const fuego = document.getElementById("fuego");
 
 const token = new URLSearchParams(window.location.search).get("token");
 let girado = false;
-let puedeGirar = false; // ✅ Nueva bandera de control
 
 const endpoint = "https://script.google.com/macros/s/AKfycbzXSDvrxxZ4oQZ8bFHiBl8EUFDOrKvx01YmxIkxOWmLcTmA-PPvQRWrLdggN0SZYEUr/exec";
 
-// ✅ Validación del token antes de dejar girar
 fetch(`${endpoint}?check=${token}`)
   .then(res => res.text())
   .then(res => {
-    console.log("🧾 Respuesta de validación:", res);
-
     if (res === "YA_USADO") {
       girado = true;
-      spinButton.disabled = true;
-      spinButton.textContent = "YA USADO";
       alert("Este token ya fue utilizado. No puedes girar la ruleta más de una vez.");
-    } else if (res === "NO_USADO") {
-      console.log("✅ Token válido, puede girar.");
-      puedeGirar = true;
-    } else if (res === "Token no encontrado.") {
-      girado = true;
       spinButton.disabled = true;
-      spinButton.textContent = "NO VÁLIDO";
-      alert("❌ Token no encontrado. Verifica tu enlace o si ya expiró.");
-    } else {
-      console.warn("⚠️ Respuesta inesperada:", res);
     }
-  })
-  .catch(err => {
-    console.error("❌ Error al validar token:", err);
   });
 
 let canvasSize = 500;
@@ -104,7 +86,7 @@ window.addEventListener("resize", () => {
 
 let angle = 0;
 let isSpinning = false;
-const fixedPremio = "1 VL103M\n+ 10 SIM Telcel"; // 👑 Truqueado
+const fixedPremio = "1 VL103M\n+ 10 SIM Telcel";
 
 const fixedIndex = premios.findIndex(p =>
   p.replace(/\n/g, " ").trim() === fixedPremio.replace(/\n/g, " ").trim()
@@ -118,7 +100,7 @@ function findAngle() {
 
   const sliceAngle = 360 / premios.length;
   const middleOfSlice = sliceAngle * fixedIndex + sliceAngle / 2;
-  const rotation = 5 * 360 + 90 - middleOfSlice; // Fuego está en 90°
+  const rotation = 5 * 360 + 90 - middleOfSlice; // ✅ fuego visualmente está en 90°
   return [rotation, fixedIndex];
 }
 
@@ -138,7 +120,7 @@ function spinWheel() {
     angle = rotation * progress;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawWheel(angle);
+    drawWheel(angle); // 🌀 ahora dibuja la ruleta rotada correctamente
 
     if (progress < 1) {
       requestAnimationFrame(animate);
@@ -149,13 +131,9 @@ function spinWheel() {
       fuego.style.visibility = "visible";
 
       const premioLimpio = premio.replace(/\n/g, " ").replace(/\s+/g, " ").trim();
-      console.log("🌀 Enviando premio:", premioLimpio);
-      console.log("➡️ URL:", `${endpoint}?token=${token}&premio=${encodeURIComponent(premioLimpio)}`);
-
       fetch(`${endpoint}?token=${token}&premio=${encodeURIComponent(premioLimpio)}`)
         .then(res => res.text())
         .then(data => {
-          console.log("🎯 Respuesta del servidor:", data);
           girado = true;
           spinButton.disabled = true;
         });
@@ -165,12 +143,6 @@ function spinWheel() {
   requestAnimationFrame(animate);
 }
 
-// ✅ Solo gira si el token ya fue validado
 spinButton.addEventListener("click", () => {
-  if (!isSpinning && puedeGirar) {
-    spinWheel();
-  } else if (!puedeGirar) {
-    alert("⏳ Validando token... espera un momento por favor.");
-  }
+  if (!isSpinning) spinWheel();
 });
-</script>
