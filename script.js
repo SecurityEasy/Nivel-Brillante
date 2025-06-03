@@ -16,9 +16,11 @@ const fuego = document.getElementById("fuego");
 
 const token = new URLSearchParams(window.location.search).get("token");
 let girado = false;
+let puedeGirar = false; // ✅ Nueva bandera de control
 
 const endpoint = "https://script.google.com/macros/s/AKfycbzXSDvrxxZ4oQZ8bFHiBl8EUFDOrKvx01YmxIkxOWmLcTmA-PPvQRWrLdggN0SZYEUr/exec";
 
+// ✅ Validación del token antes de dejar girar
 fetch(`${endpoint}?check=${token}`)
   .then(res => res.text())
   .then(res => {
@@ -102,7 +104,7 @@ window.addEventListener("resize", () => {
 
 let angle = 0;
 let isSpinning = false;
-const fixedPremio = "1 VL103M\n+ 10 SIM Telcel";
+const fixedPremio = "1 VL103M\n+ 10 SIM Telcel"; // 👑 Truqueado
 
 const fixedIndex = premios.findIndex(p =>
   p.replace(/\n/g, " ").trim() === fixedPremio.replace(/\n/g, " ").trim()
@@ -116,7 +118,7 @@ function findAngle() {
 
   const sliceAngle = 360 / premios.length;
   const middleOfSlice = sliceAngle * fixedIndex + sliceAngle / 2;
-  const rotation = 5 * 360 + 90 - middleOfSlice; // ✅ fuego visualmente está en 90°
+  const rotation = 5 * 360 + 90 - middleOfSlice; // Fuego está en 90°
   return [rotation, fixedIndex];
 }
 
@@ -136,7 +138,7 @@ function spinWheel() {
     angle = rotation * progress;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawWheel(angle); // 🌀 ahora dibuja la ruleta rotada correctamente
+    drawWheel(angle);
 
     if (progress < 1) {
       requestAnimationFrame(animate);
@@ -147,9 +149,13 @@ function spinWheel() {
       fuego.style.visibility = "visible";
 
       const premioLimpio = premio.replace(/\n/g, " ").replace(/\s+/g, " ").trim();
+      console.log("🌀 Enviando premio:", premioLimpio);
+      console.log("➡️ URL:", `${endpoint}?token=${token}&premio=${encodeURIComponent(premioLimpio)}`);
+
       fetch(`${endpoint}?token=${token}&premio=${encodeURIComponent(premioLimpio)}`)
         .then(res => res.text())
         .then(data => {
+          console.log("🎯 Respuesta del servidor:", data);
           girado = true;
           spinButton.disabled = true;
         });
@@ -159,6 +165,12 @@ function spinWheel() {
   requestAnimationFrame(animate);
 }
 
+// ✅ Solo gira si el token ya fue validado
 spinButton.addEventListener("click", () => {
-  if (!isSpinning) spinWheel();
+  if (!isSpinning && puedeGirar) {
+    spinWheel();
+  } else if (!puedeGirar) {
+    alert("⏳ Validando token... espera un momento por favor.");
+  }
 });
+</script>
