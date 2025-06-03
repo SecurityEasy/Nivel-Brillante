@@ -19,20 +19,13 @@ let girado = false;
 
 const endpoint = "https://script.google.com/macros/s/AKfycbzXSDvrxxZ4oQZ8bFHiBl8EUFDOrKvx01YmxIkxOWmLcTmA-PPvQRWrLdggN0SZYEUr/exec";
 
-let puedeGirar = false;
-
 fetch(`${endpoint}?check=${token}`)
   .then(res => res.text())
   .then(res => {
     if (res === "YA_USADO") {
       girado = true;
+      alert("Este token ya fue utilizado. No puedes girar la ruleta más de una vez.");
       spinButton.disabled = true;
-      spinButton.textContent = "YA USADO";
-    } else if (res === "NO_USADO") {
-      puedeGirar = true;
-    } else {
-      spinButton.disabled = true;
-      spinButton.textContent = "NO VÁLIDO";
     }
   });
 
@@ -151,9 +144,5 @@ function spinWheel() {
 }
 
 spinButton.addEventListener("click", () => {
-  if (!isSpinning && puedeGirar) {
-    spinWheel();
-  } else if (!puedeGirar) {
-    alert("⏳ Validando tu token... espera un momento.");
-  }
+  if (!isSpinning) spinWheel();
 });
