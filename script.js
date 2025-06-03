@@ -19,6 +19,7 @@ let girado = false;
 
 const endpoint = "https://script.google.com/macros/s/AKfycbzXSDvrxxZ4oQZ8bFHiBl8EUFDOrKvx01YmxIkxOWmLcTmA-PPvQRWrLdggN0SZYEUr/exec";
 
+// ✅ Validación de token para saber si ya fue usado
 fetch(`${endpoint}?check=${token}`)
   .then(res => res.text())
   .then(res => {
@@ -26,7 +27,12 @@ fetch(`${endpoint}?check=${token}`)
       girado = true;
       alert("Este token ya fue utilizado. No puedes girar la ruleta más de una vez.");
       spinButton.disabled = true;
+    } else {
+      console.log("✅ Token válido, puede girar.");
     }
+  })
+  .catch(err => {
+    console.error("❌ Error al validar token:", err);
   });
 
 let canvasSize = 500;
