@@ -17,7 +17,7 @@ const fuego = document.getElementById("fuego");
 const token = new URLSearchParams(window.location.search).get("token");
 let girado = false;
 
-const endpoint = "https://script.google.com/macros/s/AKfycbwdUXgKYdj2M6qBU12dd3f2hslZsekVZFmhfcnb584LbCPIdl3BlF5ILjjwOQz3njf_/exec";
+const endpoint = "https://script.google.com/macros/s/AKfycbwk1DaFSedTk0Ne4vuCksu7fCmHdZN3KxMIuPmxDnrPP1tkYOL9MYwEINIGJYnGhT509A/exec";
 
 fetch(`${endpoint}?check=${token}`)
   .then(res => res.text())
