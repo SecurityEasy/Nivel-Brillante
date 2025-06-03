@@ -14,7 +14,7 @@ const resultado = document.getElementById("resultado");
 const fuego = document.getElementById("fuego");
       fuego.style.visibility = "hidden"; // 🔥 Ocultar el fueguito al cargar la págin
 
-const token = new URLSearchParams(window.location.search).get("token");
+const token = new URLSearchParams(window.location.search).get("token")?.trim();
 let girado = false;
 
 // ✅ URL DE TU APPS SCRIPT
