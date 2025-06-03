@@ -13,7 +13,6 @@ const ctx = canvas.getContext("2d");
 const spinButton = document.getElementById("spin");
 const resultado = document.getElementById("resultado");
 const fuego = document.getElementById("fuego");
-fuego.style.visibility = "hidden";
 
 const token = new URLSearchParams(window.location.search).get("token");
 let girado = false;
