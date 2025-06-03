@@ -81,7 +81,9 @@ let angle = 195; // Comienza apuntando a otro premio visualmente
 let isSpinning = false;
 
 function findAgle() {
-  const fixedIndex = premios.findIndex((p) => p.includes("1 VL103M + 10 SIMS Telcel"));
+  const fixedIndex = premios.findIndex((p) =>
+  p.replace(/\n/g, " ").includes("1 VL103M + 10 SIM Telcel")
+);
   const degreesPerPrize = 360 / premios.length;
   const pointerOffset = -degreesPerPrize; // 🔺 Donde apunta el fueguito (arriba)
   const targetAngle =
