@@ -63,7 +63,6 @@ canvas#wheel {
   width: 320px;
   z-index: 999;
   pointer-events: none;
-  visibility: visible;
 }
 
 #spin {
