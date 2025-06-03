@@ -23,10 +23,12 @@ const endpoint = "https://script.google.com/macros/s/AKfycbzXSDvrxxZ4oQZ8bFHiBl8
 fetch(`${endpoint}?check=${token}`)
   .then(res => res.text())
   .then(res => {
+    console.log("🧾 Respuesta de validación:", res);
     if (res === "YA_USADO") {
       girado = true;
-      alert("Este token ya fue utilizado. No puedes girar la ruleta más de una vez.");
       spinButton.disabled = true;
+      spinButton.textContent = "YA USADO";
+      alert("Este token ya fue utilizado. No puedes girar la ruleta más de una vez.");
     } else {
       console.log("✅ Token válido, puede girar.");
     }
