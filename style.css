@@ -58,9 +58,9 @@ canvas#wheel {
 .fuego {
   position: absolute;
   left: 50%;
-  bottom: 0px;
+  bottom: -177px;
   transform: translateX(-50%);
-  width: 320px;
+  width: 200px;
   z-index: 999;
   pointer-events: none;
 }
