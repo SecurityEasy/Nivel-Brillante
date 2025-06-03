@@ -151,5 +151,9 @@ function spinWheel() {
 }
 
 spinButton.addEventListener("click", () => {
-  if (!isSpinning) spinWheel();
+  if (!isSpinning && puedeGirar) {
+    spinWheel();
+  } else if (!puedeGirar) {
+    alert("⏳ Validando tu token... espera un momento.");
+  }
 });
