@@ -84,7 +84,7 @@ const spinWheel = () => {
   isSpinning = true;
   fuego.style.visibility = "hidden";
 
-  const fixedIndex = premios.findIndex(p => p.includes("1 Renovación"));
+  const fixedIndex = premios.findIndex(p => p.includes("1 VL103M + 10 SIM Telcel"));
   const degreesPerPrize = 360 / premios.length;
   const pointerOffset = 90; // 🔺 Donde apunta el fueguito (arriba)
   const targetAngle = (360 - (fixedIndex * degreesPerPrize + degreesPerPrize / 2)) + pointerOffset;
