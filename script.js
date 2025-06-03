@@ -19,18 +19,25 @@ let girado = false;
 
 const endpoint = "https://script.google.com/macros/s/AKfycbzXSDvrxxZ4oQZ8bFHiBl8EUFDOrKvx01YmxIkxOWmLcTmA-PPvQRWrLdggN0SZYEUr/exec";
 
-// ✅ Validación de token para saber si ya fue usado
 fetch(`${endpoint}?check=${token}`)
   .then(res => res.text())
   .then(res => {
     console.log("🧾 Respuesta de validación:", res);
+
     if (res === "YA_USADO") {
       girado = true;
       spinButton.disabled = true;
       spinButton.textContent = "YA USADO";
       alert("Este token ya fue utilizado. No puedes girar la ruleta más de una vez.");
-    } else {
+    } else if (res === "NO_USADO") {
       console.log("✅ Token válido, puede girar.");
+    } else if (res === "Token no encontrado.") {
+      girado = true;
+      spinButton.disabled = true;
+      spinButton.textContent = "NO VÁLIDO";
+      alert("❌ Token no encontrado. Verifica tu enlace o si ya expiró.");
+    } else {
+      console.warn("⚠️ Respuesta inesperada:", res);
     }
   })
   .catch(err => {
