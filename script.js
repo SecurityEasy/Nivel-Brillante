@@ -5,7 +5,7 @@ const premios = [
   "1 VL103M\n+ 10 SIM Telcel", // 🎯 Premio truqueado
 ];
 
-const colors = ["#A288A6", "#C97C5D", "#D9A5B3", "#4A1942"];
+const colors = ["#A288A6", "#D9A5B3", "#B799B0", "#4A1942"];
 
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
